@@ -1,0 +1,56 @@
+import pygame
+
+class Ascii():
+    """The main part of the program. This class takes an
+    image and turns it into its Ascii equivalent.
+
+    self.spacing = The spacing of each Ascii character on the image.
+    the smaller the number the 'better' the image looks, but less authentic.
+
+    self.image = an image of your choice
+    self.font_size = The size of each Ascii character. Values between
+    10-20 are the sweet spots."""
+    
+    def __init__(self,spacing,image):
+
+        self.spacing = spacing
+        self.image = pygame.image.load(image)
+        self.font_size = 20
+        self.font = pygame.font.Font(None,self.font_size)
+       
+    def average_rgb(self,x,y):
+        """Gets the average of the rgb for easy conversion to black and white"""
+        average = sum(self.image.get_at((x,y)))//len(self.image.get_at((x,y)))
+        return average
+
+    def create_image(self,surface):
+        """Blits an Ascii character repective of the
+        average rgb value of the pixel at that point"""
+        for x in range(0, self.image.get_size()[0], self.spacing):
+            for y in range(0, self.image.get_size()[1], self.spacing):
+                self.image.get_at((x,y))
+                if self.average_rgb(x,y) >225:
+                    text = self.font.render(' ',False,((0,0,0)))
+                    surface.blit(text, (x, y))
+                elif self.average_rgb(x,y) >200:
+                    text = self.font.render('"',False,((0,0,0)))
+                    surface.blit(text, (x, y))
+                elif self.average_rgb(x,y) >175:
+                    text = self.font.render("░",False,((0,0,0)))
+                    surface.blit(text, (x, y))
+                elif self.average_rgb(x,y) >150:
+                    text = self.font.render("░",False,((0,0,0)))
+                    surface.blit(text, (x, y))
+                elif self.average_rgb(x,y) >100:
+                    text = self.font.render("@",False,((0,0,0)))
+                    surface.blit(text, (x, y))
+                elif self.average_rgb(x,y) >75:
+                    text = self.font.render('▒',False,((0,0,0)))
+                    surface.blit(text, (x, y))
+                elif self.average_rgb(x,y) > 25:
+                    text = self.font.render('▓',False,((0,0,0)))
+                    surface.blit(text, (x, y))
+                else:
+                    text = self.font.render('█',False,((0,0,0)))
+                    surface.blit(text, (x, y))
+
